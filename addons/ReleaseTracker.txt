@@ -1,0 +1,8 @@
+## Title: Release Tracker
+## Author: Kawamonkey
+## APIVersion: $APIVERSION
+## Version: $ADDONVERSION
+## DependsOn: LibNotification
+## SavedVariables: ReleaseTracker
+
+ReleaseTracker.lua
