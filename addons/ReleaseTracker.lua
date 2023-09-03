@@ -65,7 +65,7 @@ EVENT_MANAGER:RegisterForEvent(
 	"ReleaseTracker",
 	EVENT_ADD_ON_LOADED,
 	function(_, addOnName)
-		if("ReleaseTracker" ~= addOnName) then return end
+		if "ReleaseTracker" ~= addOnName then return end
 
 		declined = ZO_SavedVars:NewAccountWide("ReleaseTracker", 1, nil, {})
 

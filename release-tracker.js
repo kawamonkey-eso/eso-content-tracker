@@ -49,6 +49,7 @@ function generateReleaseLua(items) {
 
 	lua += `
 }
+
 `
 
 	return lua

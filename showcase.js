@@ -138,7 +138,7 @@ async function getShowcase(slug) {
 	} catch {}
 
 	const results = await Promise.all([getShowcase(currentSlug), getShowcase(previousSlug)])
-	
+
 	const items = results[0]
 		.concat(results[1])
 		.filter(item => item.startDate >= showcaseDate || (item.endDate && item.endDate > showcaseDate))
