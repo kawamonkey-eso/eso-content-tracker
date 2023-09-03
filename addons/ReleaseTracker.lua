@@ -13,7 +13,7 @@ local function UpdateNotifications()
 	for _, v in ipairs(releases) do
 		if
 			declined[v.id] == nil and
-			GetDiffBetweenTimeStamps(currentTimeStamp, v.startDate) >= 0 and
+			GetDiffBetweenTimeStamps(v.startDate, currentTimeStamp) <= 0 and
 			(v.endDate == nil or GetDiffBetweenTimeStamps(currentTimeStamp, v.endDate) < 0)
 		then
 			table.insert(
@@ -70,9 +70,8 @@ EVENT_MANAGER:RegisterForEvent(
 		local currentTimeStamp = GetTimeStamp()
 
 		for _, v in ipairs(releases) do
-			local timeUntilStart = GetDiffBetweenTimeStamps(currentTimeStamp, v.startDate)
+			local timeUntilStart = GetDiffBetweenTimeStamps(v.startDate, currentTimeStamp)
 
-			-- TODO fix
 			if timeUntilStart > 0 then
 				EVENT_MANAGER:RegisterForUpdate(
 					"ReleaseCheck" .. v.startDate,
