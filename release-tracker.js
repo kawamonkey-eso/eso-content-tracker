@@ -101,7 +101,6 @@ async function upload(body) {
 	const formData = new FormData()
 	formData.append('id', process.env.ADDON_ID)
 	formData.append('version', addonVersion)
-	formData.append('compatible', apiVersion)
 	formData.append('updatefile', archive, `ReleaseTracker-${addonVersion}.zip`)
 
 	await upload(formData)
