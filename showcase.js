@@ -87,7 +87,7 @@ async function getShowcase(slug) {
 							u = true
 						}
 						
-						if ((m = /from (\w+) (\d{1,2})(?:, (\d{4}))? to (\w+) (\d{1,2})(?:, (\d{4}))?/.exec(chunk)) !== null) {
+						if ((m = /(\w+) (\d{1,2})(?:, (\d{4}))?,? to (\w+) (\d{1,2})(?:, (\d{4}))?/.exec(chunk)) !== null) {
 							const [, startMonth, startDay, startYear, endMonth, endDay, endYear] = m
 							const startDate = Date.parse(`${startDay} ${startMonth} ${startYear ?? endYear}`) + 15 * 60 * 60 * 1000
 							const endDate = Date.parse(`${endDay} ${endMonth} ${endYear}`) + 15 * 60 * 60 * 1000
@@ -95,7 +95,7 @@ async function getShowcase(slug) {
 							results[currentTitle].startDate = startDate
 							results[currentTitle].endDate = endDate
 							u = true
-						} else if ((m = /starting (\w+) (\d{1,2})(?:, (\d{4}))/.exec(chunk)) !== null) {
+						} else if ((m = /(\w+) (\d{1,2})(?:, (\d{4}))/.exec(chunk)) !== null) {
 							const [, month, day, year] = m
 							const date = Date.parse(`${day} ${month} ${year}`) + 15 * 60 * 60 * 1000
 	
