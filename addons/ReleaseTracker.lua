@@ -12,6 +12,7 @@ local function UpdateNotifications()
 
 	for _, v in ipairs(releases) do
 		if
+			(v.type ~= "esoPlusFreebie" or IsESOPlusSubscriber()) and
 			declined[v.id] == nil and
 			GetDiffBetweenTimeStamps(v.startDate, currentTimeStamp) <= 0 and
 			(v.endDate == nil or GetDiffBetweenTimeStamps(currentTimeStamp, v.endDate) < 0)
@@ -22,11 +23,11 @@ local function UpdateNotifications()
 					id = v.id,
 					dataType = NOTIFICATIONS_ALERT_DATA,
 					secsSinceRequest = ZO_NormalizeSecondsSince(0),
-					note = v.source,
+					note = v.type == "esoPlusFreebie" and "Free in Crown Store with ESO+" or v.source,
 					message = v.name,
 					heading = "Content Releases",
 					shortDisplayText = "Content Releases",
-					texture = "/esoui/art/dailyloginrewards/dailyloginrewards_claimed_stamp.dds",
+					texture = v.type == "esoPlusFreebie" and "/esoui/art/treeicons/gamepad/tutorial_idexicon_esoplus.dds" or "/esoui/art/dailyloginrewards/dailyloginrewards_claimed_stamp.dds",
 					keyboardDeclineCallback = OnDecline,
 					gamepadDeclineCallback = OnDecline
 				}
@@ -43,12 +44,15 @@ SLASH_COMMANDS["/releases"] = function()
 	CHAT_ROUTER:AddSystemMessage("Content Releases")
 
 	for _, v in ipairs(releases) do
-		if v.endDate == nil or GetDiffBetweenTimeStamps(v.endDate, currentTimeStamp) > 0 then
+		if
+			(v.type ~= "esoPlusFreebie" or IsESOPlusSubscriber()) and
+			(v.endDate == nil or GetDiffBetweenTimeStamps(currentTimeStamp, v.endDate) < 0)
+		then
 			CHAT_ROUTER:AddSystemMessage(
 				zo_strformat(
 					v.endDate == nil and "<<1>> [<<3>>]\n<<2>>" or "<<1>> [<<3>> to <<4>>]\n<<2>>",
 					v.name,
-					v.source,
+					v.type == "esoPlusFreebie" and "Free in Crown Store with ESO+" or v.source,
 					GetDateStringFromTimestamp(v.startDate),
 					GetDateStringFromTimestamp(v.endDate)
 				)
