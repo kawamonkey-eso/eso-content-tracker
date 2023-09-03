@@ -10,6 +10,11 @@ function generateReleaseLua(items) {
 		let name, source, type
 
 		if (item.ingame) {
+			// ignore motifs with an end date, likely already released
+			if (item.ingame.source == 'motif' && item.endDate) {
+				continue
+			}
+
 			name = item.ingame.name
 			source = item.ingame.source.replace(/["\n]/g, '\\$&').replace(/\* (.+)/g, '|t16:16:/esoui/art/miscellaneous/bullet.dds|t $1')
 			type = item.ingame.type
