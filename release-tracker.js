@@ -1,7 +1,8 @@
-const {showcaseDate, items } = require('./showcase.json')
-const archiver = require('archiver')
+const { showcaseDate, items } = require('./showcase.json')
 const { readFile } = require('fs/promises')
-const FormData = require('form-data')
+const archiver = require('archiver'),
+	fetch = require('node-fetch'),
+	FormData = require('form-data')
 
 function generateReleaseLua(items) {
 	let lua = 'local releases = {'
