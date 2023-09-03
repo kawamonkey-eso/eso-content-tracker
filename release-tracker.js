@@ -82,7 +82,7 @@ async function upload(body) {
 
 (async () => {
 	const sDate = new Date(showcaseDate)
-	const addonVersion = sDate.getFullYear() + '.' + sDate.getMonth()
+	const addonVersion = sDate.getFullYear() + '.' + (sDate.getMonth()+1)
 	const apiVersion = await getLatestApiVersion()
 
 	lua = generateReleaseLua(items)
