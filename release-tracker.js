@@ -60,7 +60,7 @@ async function getLatestApiVersion() {
 
 	let m
 
-	if ((m = /Last update: ([\d\.]+)/.exec(html)) !== null) {
+	if ((m = /API (\d+)/.exec(html)) !== null) {
 		return m[1]
 	}
 }
