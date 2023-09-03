@@ -24,7 +24,7 @@ async function getShowcaseDetails() {
 async function getShowcase(slug) {
 	const response = await fetch(fetchDomain + slug, fetchOpts)
 	const html = await response.text()
-	const [,cleanHtml] = html.replace(/’/g, '\'').replace(/[“”]/g, '"').replace(/-/g, '-').replace(/&nbsp;/g, ' ').split('id="text_block1"')
+	const [,cleanHtml] = html.replace(/’/g, '\'').replace(/[“”]/g, '"').replace(/-/g, '-').replace(/&nbsp;/g, ' ').replace(/undaunted key/g, 'Undaunted key').split('id="text_block1"')
 
 	const regex = /(?:<img .+?data-lazy-src="(.+?(\w{32}).+?)".+?>|<p>(.+?)<\/p>)/gs
 	let currentImage, currentTitle, m
