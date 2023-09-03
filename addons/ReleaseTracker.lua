@@ -57,30 +57,6 @@ SLASH_COMMANDS["/releases"] = function()
 	end
 end
 
-function Test()
-	local currentTimeStamp = GetTimeStamp()
-
-	for _, v in ipairs(releases) do
-		local timeUntilStart = GetDiffBetweenTimeStamps(currentTimeStamp, v.startDate)
-
-		d(timeUntilStart)
-
-		-- TODO fix
-		if timeUntilStart > 0 then
-			d("ReleaseCheck" .. v.startDate)
-
-			EVENT_MANAGER:RegisterForUpdate(
-				"ReleaseCheck" .. v.startDate,
-				timeUntilStart,
-				function()
-					EVENT_MANAGER:UnregisterForUpdate("ReleaseCheck" .. v.startDate)
-					UpdateNotifications()
-				end
-			)
-		end
-	end
-end
-
 EVENT_MANAGER:RegisterForEvent(
 	"ReleaseTracker",
 	EVENT_ADD_ON_LOADED,
