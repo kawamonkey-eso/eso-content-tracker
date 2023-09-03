@@ -1,0 +1,29 @@
+on:
+  schedule:
+    - cron:  '0 0 * * *'
+
+env:
+  ADDON_ID: 3713
+  API_KEY: ${{ secrets.ApiKey }}
+  TZ: 'UTC'
+
+jobs:
+  test_schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache Showcase JSON
+        uses: actions/cache@v3
+        with:
+          path: ~/showcase.json
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install
+        run: npm ci
+      - name: Generate Showcase JSON
+        run: node showcase
+      - name: Publish Release Tracker addon
+        run: node --no-experimental-fetch release-tracker
