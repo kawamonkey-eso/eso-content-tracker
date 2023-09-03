@@ -1,4 +1,3 @@
-process.env.TZ = 'UTC'
 const { writeFile } = require('fs/promises')
 const fetchOpts = {headers: {'User-Agent': 'Googlebot'}}
 const fetchDomain = 'https://www.elderscrollsonline.com'
