@@ -65,7 +65,7 @@ async function getLatestApiVersion() {
 	}
 }
 
-async function upload(data) {
+async function upload(body) {
 	const response = await fetch(
 		'https://api.esoui.com/addons/updatetest',
 		{
@@ -73,7 +73,7 @@ async function upload(data) {
 				'x-api-token': process.env.API_TOKEN
 			},
 			method: 'POST',
-			body: formData
+			body
 		}
 	)
 
