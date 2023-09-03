@@ -141,7 +141,7 @@ async function getShowcase(slug) {
 
 	const items = results[0]
 		.concat(results[1])
-		.filter(item => item.startDate >= showcaseDate || (item.endDate && item.endDate > showcaseDate))
+		.filter(item => !item.endDate || item.endDate > showcaseDate)
 
 	items
 		.sort((a,b) => a.startDate - b.startDate)
