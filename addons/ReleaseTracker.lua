@@ -79,7 +79,7 @@ EVENT_MANAGER:RegisterForEvent(
 			if timeUntilStart > 0 then
 				EVENT_MANAGER:RegisterForUpdate(
 					"ReleaseCheck" .. v.startDate,
-					timeUntilStart,
+					timeUntilStart * 1000,
 					function()
 						EVENT_MANAGER:UnregisterForUpdate("ReleaseCheck" .. v.startDate)
 						UpdateNotifications()
