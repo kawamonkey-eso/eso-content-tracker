@@ -2,6 +2,11 @@ on:
   schedule:
     - cron:  '0 0 * * *'
   workflow_dispatch:
+    inputs:
+      ExtraVersion:
+        description: 'Extra version string'
+        required: false
+        type: string
 
 env:
   ADDON_ID: 3713

@@ -1,6 +1,7 @@
 const { showcaseDate, items } = require('./showcase.json')
 const { readFile } = require('fs/promises')
 const archiver = require('archiver'),
+	core = require('@actions/core'),
 	fetch = require('node-fetch'),
 	FormData = require('form-data')
 
@@ -66,9 +67,23 @@ async function getLatestApiVersion() {
 	}
 }
 
+async function getLatestAddonVersion() {
+	const response = await fetch(
+		'https://api.esoui.com/addons/details/' + process.env.ADDON_ID + '.json',
+		{
+			headers: {
+				'x-api-token': process.env.API_TOKEN
+			}
+		}
+	)
+	const json = await response.json()
+
+	return json[0].version
+}
+
 async function upload(body) {
 	const response = await fetch(
-		'https://api.esoui.com/addons/updatetest',
+		'https://api.esoui.com/addons/update',
 		{
 			headers: {
 				'x-api-token': process.env.API_TOKEN
@@ -83,11 +98,20 @@ async function upload(body) {
 
 (async () => {
 	const sDate = new Date(showcaseDate)
-	const addonVersion = sDate.getFullYear() + '.' + (sDate.getMonth()+1)
-	const apiVersion = await getLatestApiVersion()
+	let addonVersion = sDate.getFullYear() + '.' + (sDate.getMonth()+1) + core.getInput('ExtraVersion')
+	let latestAddonVersion = await getLatestAddonVersion()
+	core.info('Addon Version ' + addonVersion)
+
+	if (addonVersion == latestAddonVersion.slice(0, addonVersion.length)) {
+		core.notice('Version matched existing release')
+		return
+	}
 
 	lua = generateReleaseLua(items)
 	lua += await readFile('addons/ReleaseTracker.lua', 'utf8')
+
+	const apiVersion = await getLatestApiVersion()
+	core.info('API Version ' + apiVersion)
 
 	let readme = await readFile('addons/ReleaseTracker.txt', 'utf8')
 	readme = readme
