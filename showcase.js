@@ -89,15 +89,18 @@ async function getShowcase(slug) {
 						
 						if ((m = /(\w+) (\d{1,2})(?:, (\d{4}))?,? to (\w+) (\d{1,2})(?:, (\d{4}))?/.exec(chunk)) !== null) {
 							const [, startMonth, startDay, startYear, endMonth, endDay, endYear] = m
-							const startDate = Date.parse(`${startDay} ${startMonth} ${startYear ?? endYear}`) + 14 * 60 * 60 * 1000
-							const endDate = Date.parse(`${endDay} ${endMonth} ${endYear}`) + 14 * 60 * 60 * 1000
+							const startDate = new Date(`${startDay} ${startMonth} ${startYear ?? endYear}`)
+							const endDate = new Date(`${endDay} ${endMonth} ${endYear}`)
+							startDate.setHours(14)
+							endDate.setHours(14)
 	
 							results[currentTitle].startDate = startDate
 							results[currentTitle].endDate = endDate
 							u = true
-						} else if ((m = /(\w+) (\d{1,2})(?:, (\d{4}))/.exec(chunk)) !== null) {
+						} else if ((m = /(\w+) (\d{1,2})(?:, (\d{4}))?/.exec(chunk)) !== null) {
 							const [, month, day, year] = m
-							const date = Date.parse(`${day} ${month} ${year}`) + 14 * 60 * 60 * 1000
+							const date = new Date(`${day} ${month} ${year}`)
+							date.setHours(14)
 	
 							results[currentTitle].startDate = date
 							u = true
