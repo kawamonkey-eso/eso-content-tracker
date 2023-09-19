@@ -10,7 +10,7 @@ on:
 
 env:
   ADDON_ID: 3713
-  API_KEY: ${{ secrets.APIKEY }}
+  API_KEY: ${{ secrets.API_KEY }}
   TZ: 'UTC'
 
 jobs:
