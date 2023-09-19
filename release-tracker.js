@@ -78,10 +78,7 @@ async function getLatestAddonVersion() {
 	)
 	const json = await response.json()
 
-	core.info(JSON.stringify(process.env))
-	core.info(JSON.stringify(json))
-
-	return '2023.9'
+	return json[0].version
 }
 
 async function upload(body) {
