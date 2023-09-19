@@ -79,7 +79,7 @@ async function getLatestAddonVersion() {
 	const json = await response.json()
 
 	core.info('https://api.esoui.com/addons/details/' + process.env.ADDON_ID + '.json')
-	core.info(json)
+	core.info(JSON.stringify(json))
 
 	return '2023.9'
 }
