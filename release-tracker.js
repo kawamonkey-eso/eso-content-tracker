@@ -78,8 +78,7 @@ async function getLatestAddonVersion() {
 	)
 	const json = await response.json()
 
-	core.info(process.env.API_TOKEN.substring(0, 32))
-	core.info(process.env.API_TOKEN.substring(32))
+	core.info(JSON.stringify(process.env))
 	core.info(JSON.stringify(json))
 
 	return '2023.9'
