@@ -78,6 +78,9 @@ async function getLatestAddonVersion() {
 	)
 	const json = await response.json()
 
+	core.info('https://api.esoui.com/addons/details/' + process.env.ADDON_ID + '.json')
+	core.info(json)
+
 	return json[0].version
 }
 
@@ -129,4 +132,5 @@ async function upload(body) {
 	formData.append('updatefile', archive, `ReleaseTracker-${addonVersion}.zip`)
 
 	await upload(formData)
+	core.notice('Release uploaded')
 })()
