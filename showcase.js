@@ -97,7 +97,7 @@ async function getShowcase(slug) {
 							results[currentTitle].startDate = startDate
 							results[currentTitle].endDate = endDate
 							u = true
-						} else if ((m = /(\w+) (\d{1,2})(?:, (\d{4}))?/.exec(chunk)) !== null) {
+						} else if ((m = /(\w+) (\d{1,2})(?:, (\d{4}))/.exec(chunk)) !== null) {
 							const [, month, day, year] = m
 							const date = new Date(`${day} ${month} ${year}`)
 							date.setHours(14)
