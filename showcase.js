@@ -66,7 +66,7 @@ async function getShowcase(slug) {
 
 								results[currentTitle].ingame = {
 									name: name + ' Crafting Motif',
-									source: 'The ' + name + ' Crafting Motif has a chance to drop' + chunk.substring(28),
+									source: 'The ' + name + ' Crafting Motif has a chance to drop' + chunk.substring(25),
 									type: 'motif',
 								}
 							}
