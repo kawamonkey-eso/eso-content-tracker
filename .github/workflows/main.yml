@@ -11,6 +11,7 @@ on:
 env:
   ADDON_ID: 3713
   API_TOKEN: ${{ secrets.API_TOKEN }}
+  EXTRA_VERSION: ${{ inputs.ExtraVersion }}
   TZ: 'UTC'
 
 jobs:

@@ -98,7 +98,7 @@ async function upload(body) {
 
 (async () => {
 	const sDate = new Date(showcaseDate)
-	let addonVersion = sDate.getFullYear() + '.' + (sDate.getMonth()+1) + core.getInput('ExtraVersion')
+	let addonVersion = sDate.getFullYear() + '.' + (sDate.getMonth()+1) + process.env.EXTRA_VERSION
 	let latestAddonVersion = await getLatestAddonVersion()
 	core.info('Addon Version ' + addonVersion)
 
