@@ -61,12 +61,12 @@ async function getShowcase(slug) {
 
 					if (currentTitle && currentTitle.substring(0, 21) == 'Crown Crafting Motif:') {
 						for (const chunk of desc.split('. ')) {
-							if (chunk.substring(0, 28) == 'Also has a chance to drop by') {
+							if (chunk.substring(0, 25) == 'Also has a chance to drop') {
 								const name = currentTitle.substring(21).trim()
 
 								results[currentTitle].ingame = {
 									name: name + ' Crafting Motif',
-									source: 'The ' + name + ' Crafting Motif has a chance to drop by' + chunk.substring(28),
+									source: 'The ' + name + ' Crafting Motif has a chance to drop' + chunk.substring(28),
 									type: 'motif',
 								}
 							}
