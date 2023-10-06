@@ -24,10 +24,11 @@ async function getShowcaseDetails() {
 async function getShowcase(slug) {
 	const response = await fetch(fetchDomain + slug, fetchOpts)
 	const html = await response.text()
-	const [,cleanHtml] = html.replace(/’/g, '\'').replace(/[“”]/g, '"').replace(/-/g, '-').replace(/&nbsp;/g, ' ').replace(/undaunted key/g, 'Undaunted key').split('id="text_block1"')
+
+	const [cleanHtml] = html.replace(/’/g, '\'').replace(/[“”]/g, '"').replace(/-/g, '-').replace(/&nbsp;/g, ' ').replace(/undaunted key/g, 'Undaunted key').match(/id="text_block1".+class="tags"/s)
 
 	const regex = /(?:<img .+?data-lazy-src="(.+?(\w{32}).+?)".+?>|<p>(.+?)<\/p>)/gs
-	let currentImage, currentTitle, m
+	let currentTitle, m
 	let results = {}
 
 	while ((m = regex.exec(cleanHtml)) !== null) {
@@ -59,10 +60,11 @@ async function getShowcase(slug) {
 						results[currentTitle].desc = desc
 					}
 
-					if (currentTitle && currentTitle.substring(0, 21) == 'Crown Crafting Motif:') {
+					let t
+					if (currentTitle && (t = /Crown Crafting Motifs?: (.+)/.exec(currentTitle)) !== null) {
 						for (const chunk of desc.split('. ')) {
 							if (chunk.substring(0, 25) == 'Also has a chance to drop') {
-								const name = currentTitle.substring(21).trim()
+								const name = t[1]
 
 								results[currentTitle].ingame = {
 									name: name + ' Crafting Motif',
@@ -87,25 +89,40 @@ async function getShowcase(slug) {
 							u = true
 						}
 						
-						if ((m = /(\w+) (\d{1,2})(?:, (\d{4}))?,? to (\w+) (\d{1,2})(?:, (\d{4}))?/.exec(chunk)) !== null) {
-							const [, startMonth, startDay, startYear, endMonth, endDay, endYear] = m
-							const startDate = new Date(`${startDay} ${startMonth} ${startYear ?? endYear}`)
-							const endDate = new Date(`${endDay} ${endMonth} ${endYear}`)
-							startDate.setHours(14)
-							endDate.setHours(14)
-	
-							results[currentTitle].startDate = startDate
-							results[currentTitle].endDate = endDate
-							u = true
-						} else if ((m = /(\w+) (\d{1,2})(?:, (\d{4}))/.exec(chunk)) !== null) {
-							const [, month, day, year] = m
-							const date = new Date(`${day} ${month} ${year}`)
-							date.setHours(14)
-	
-							results[currentTitle].startDate = date
+						const dates = [...chunk.matchAll(/([A-Z][a-z]+) (\d{1,2})(?:, (\d{4}))?,?(?: at (\d+)([AP]M) ([A-Z]{2,3}))?/g)]
+
+						if (dates.length) {
+							let endMonth, endDay, endYear, endHour, endAmPm, endTZ
+
+							const [, startMonth, startDay, startYear, startHour, startAmPm, startTZ] = dates[0]
+
+							if (startAmPm == 'PM') {
+								startHour += 12
+							}
+
+							if (dates.length == 2) {
+								[, endMonth, endDay, endYear, endHour, endAmPm, endTZ] = dates[1]
+
+								if (endAmPm == 'PM') {
+									endHour += 12
+								}
+
+								const endDate = new Date(`${endDay} ${endMonth} ${endYear} ${endHour}:00 ${endTZ}`)
+
+								if (endDate.valueOf() != NaN) {
+									results[currentTitle].endDate = endDate
+								}
+							}
+
+							const startDate = new Date(`${startDay} ${startMonth} ${startYear ?? endYear} ${startHour ?? endHour}:00 ${startTZ ?? endTZ}`)
+
+							if (startDate.valueOf() != NaN) {
+								results[currentTitle].startDate = startDate
+							}
+
 							u = true
 						}
-						
+
 						if (armsPack && !u) {
 							source.push(chunk)
 						}
