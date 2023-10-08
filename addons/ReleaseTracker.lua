@@ -48,6 +48,19 @@ SLASH_COMMANDS["/releases"] = function()
 			(v.type ~= "esoPlusFreebie" or IsESOPlusSubscriber()) and
 			(v.endDate == nil or GetDiffBetweenTimeStamps(currentTimeStamp, v.endDate) < 0)
 		then
+			if v.source then
+				local achievementName = string.match(v.source, "achievement \"(.+)\"")
+
+				if achievementName then
+					for achievementId = 1, 9999 do
+						if achievementName == GetAchievementName(achievementId) then
+							v.source = string.gsub(v.source, achievementName, GetAchievementLink(achievementId))
+							break
+						end
+					end
+				end
+			end
+
 			CHAT_ROUTER:AddSystemMessage(
 				zo_strformat(
 					v.endDate == nil and "<<1>> [<<3>>]\n<<2>>" or "<<1>> [<<3>> to <<4>>]\n<<2>>",
