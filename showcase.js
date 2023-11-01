@@ -160,7 +160,21 @@ async function getShowcase(slug) {
 
 	const items = results[0]
 		.concat(results[1])
-		.filter(item => item.startDate && (!item.endDate || item.endDate > showcaseDate))
+		.filter((item, i, arr) => {
+			if (item.startDate && (!item.endDate || item.endDate > showcaseDate)) {
+				for (const j in arr) {
+					if (i == j) {
+						continue
+					} else if (item.title == arr[j].title) {
+						return false
+					}
+				}
+
+				return true
+			} else {
+				return false
+			}
+		})
 
 	for (const item of items) {
 		if (item.ingame?.type == 'motif' && item.endDate) {
