@@ -109,14 +109,14 @@ async function getShowcase(slug) {
 
 								const endDate = new Date(`${endDay} ${endMonth} ${endYear} ${endHour}:00 ${endTZ}`)
 
-								if (endDate.valueOf() != NaN) {
+								if (!isNaN(endDate)) {
 									results[currentTitle].endDate = endDate
 								}
 							}
 
 							const startDate = new Date(`${startDay} ${startMonth} ${startYear ?? endYear} ${startHour ?? endHour}:00 ${startTZ ?? endTZ}`)
 
-							if (startDate.valueOf() != NaN) {
+							if (!isNaN(startDate)) {
 								results[currentTitle].startDate = startDate
 							}
 
