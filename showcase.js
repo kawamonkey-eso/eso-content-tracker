@@ -143,7 +143,6 @@ async function getShowcase(slug) {
 	}
 
 	return Object.values(results)
-		.filter(result => result.startDate)
 }
 
 (async () => {
@@ -161,7 +160,13 @@ async function getShowcase(slug) {
 
 	const items = results[0]
 		.concat(results[1])
-		.filter(item => !item.endDate || item.endDate > showcaseDate)
+		.filter(item => item.startDate && (!item.endDate || item.endDate > showcaseDate))
+
+	for (const item of items) {
+		if (item.ingame?.type == 'motif' && item.endDate) {
+			delete item.ingame
+		}
+	}
 
 	items
 		.sort((a,b) => a.startDate - b.startDate)
