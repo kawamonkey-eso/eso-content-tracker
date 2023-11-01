@@ -163,7 +163,7 @@ async function getShowcase(slug) {
 		.filter((item, i, arr) => {
 			if (item.startDate && (!item.endDate || item.endDate > showcaseDate)) {
 				for (const j in arr) {
-					if (i == j) {
+					if (i <= j) {
 						continue
 					} else if (item.title == arr[j].title) {
 						return false
