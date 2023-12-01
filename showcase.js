@@ -94,17 +94,17 @@ async function getShowcase(slug) {
 						if (dates.length) {
 							let endMonth, endDay, endYear, endHour, endAmPm, endTZ
 
-							const [, startMonth, startDay, startYear, startHour, startAmPm, startTZ] = dates[0]
+							let [, startMonth, startDay, startYear, startHour, startAmPm, startTZ] = dates[0]
 
 							if (startAmPm == 'PM') {
-								startHour += 12
+								startHour = parseInt(startHour) + 12
 							}
 
 							if (dates.length == 2) {
 								[, endMonth, endDay, endYear, endHour, endAmPm, endTZ] = dates[1]
 
 								if (endAmPm == 'PM') {
-									endHour += 12
+									endHour = parseInt(endHour) + 12
 								}
 
 								const endDate = new Date(`${endDay} ${endMonth} ${endYear} ${endHour}:00 ${endTZ}`)
