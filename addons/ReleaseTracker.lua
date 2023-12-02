@@ -54,7 +54,7 @@ SLASH_COMMANDS["/releases"] = function()
 				if achievementName then
 					for achievementId = 1, 9999 do
 						if achievementName == GetAchievementName(achievementId) then
-							v.source = string.gsub(v.source, achievementName, GetAchievementLink(achievementId))
+							v.source = string.gsub(v.source, string.gsub(achievementName, "-", "%%-"), GetAchievementLink(achievementId))
 							break
 						end
 					end
