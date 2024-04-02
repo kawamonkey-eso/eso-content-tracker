@@ -41,7 +41,7 @@ async function getShowcase(slug) {
 				results[currentTitle].id = m[2]
 				results[currentTitle].imageUrl = m[1]
 			}
-		} else if (m[3] != ' ' && m[3] != '<br>') {
+		} else {
 			const line = m[3].replace(/[\n\r]/g, '').replace(/<br>/g, '').replace(/<.> <\/.>/g, ' ').replace(/ +/g, ' ').trim()
 
 			if (!line) {
