@@ -42,9 +42,11 @@ async function getShowcase(slug) {
 				results[currentTitle].imageUrl = m[1]
 			}
 		} else if (m[3] != ' ' && m[3] != '<br>') {
-			const line = m[3].replace(/[\n\r]/g, '').replace(/<br>/g, '').replace(/<.> <\/.>/g, ' ').replace(/ +/g, ' ')
+			const line = m[3].replace(/[\n\r]/g, '').replace(/<br>/g, '').replace(/<.> <\/.>/g, ' ').replace(/ +/g, ' ').trim()
 
-			if (line.substring(0, 3) == '<b>' && line.substring(line.length-4) == '</b>') {
+			if (!line) {
+				continue
+			} else if (line.substring(0, 3) == '<b>' && line.substring(line.length-4) == '</b>') {
 				currentTitle = line.substring(3, line.length-4).trim()
 
 				if (currentTitle.substring(0, 10) == 'Music Box,') {
