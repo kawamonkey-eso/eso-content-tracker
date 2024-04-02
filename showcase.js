@@ -7,7 +7,7 @@ async function getShowcaseDetails() {
 	const html = await response.text()
 
 	let m, showcaseDate, currentSlug, previousSlug
-	const regex = /Crown Store Showcase—(\S+ \d{4})">.+?href="(.+?)"/gs
+	const regex = /Crown Store Showcase—(\S+ \d{4})\s*">.+?href="(.+?)"/gs
 
 	if ((m = regex.exec(html)) !== null) {
 		showcaseDate = new Date(`1 ${m[1]}`)
