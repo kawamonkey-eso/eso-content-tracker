@@ -91,7 +91,7 @@ async function getShowcase(slug) {
 							u = true
 						}
 						
-						const dates = [...chunk.matchAll(/([A-Z][a-z]+) (\d{1,2})(?:, (\d{4}))?,?(?: at (\d+)([AP]M) ([A-Z]{2,3}))?/g)]
+						const dates = [...chunk.matchAll(/([A-Z][a-z]+) (\d{1,2})(?:, (\d{4}))?,?(?: at (\d+) ?([AP]M) ([A-Z]{2,3}))?/g)]
 
 						if (dates.length) {
 							let endMonth, endDay, endYear, endHour, endAmPm, endTZ
