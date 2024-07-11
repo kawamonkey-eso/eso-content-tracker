@@ -12,8 +12,8 @@ function generateReleaseLua(items) {
 		let name, source, type
 
 		if (item.ingame) {
-			// ignore motifs with an end date, likely already released
-			if (item.ingame.source == 'motif' && item.endDate) {
+			// ignore motifs with an end date (likely already released) and Bag of Veteran's Glory
+			if ((item.ingame.source == 'motif' && item.endDate) || item.ingame.source.includes('from the Bag of Veteran\'s Glory')) {
 				continue
 			}
 
