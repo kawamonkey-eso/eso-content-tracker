@@ -61,26 +61,13 @@ async function getShowcase(slug) {
 					if (desc) {
 						results[currentTitle].desc = desc
 					}
-
-					let t
-					if (currentTitle && (t = /Crown Crafting Motifs?: (.+)/.exec(currentTitle)) !== null) {
-						for (const chunk of desc.split('. ')) {
-							if (chunk.substring(0, 25) == 'Also has a chance to drop') {
-								const name = t[1]
-
-								results[currentTitle].ingame = {
-									name: name + ' Crafting Motif',
-									source: 'The ' + name + ' Crafting Motif has a chance to drop' + chunk.substring(25),
-									type: 'motif',
-								}
-							}
-						}
-					}
 				} else {
 					const armsPack = currentTitle.substring(currentTitle.length-9) == 'Arms Pack'
+					const motif = /Crown Crafting Motifs?: (.+)/.exec(currentTitle)
+
 					let source = []
 
-					for (const chunk of line.split('. ')) {
+					for (const chunk of (line + ' ').split('. ')) {
 						let m, u
 
 						if (/FREE,? exclusively to ESO Plus Members/.test(chunk)) {
@@ -89,6 +76,16 @@ async function getShowcase(slug) {
 						} else if (chunk.includes('ESO Plus Members will receive a discount')) {
 							results[currentTitle].esoPlusDiscount = true
 							u = true
+						}
+						
+						if (motif !== null && (s = /(?:^Also has a chance to drop|have a chance to drop)(.+)/.exec(chunk)) !== null) {
+							const name = motif[1]
+
+							results[currentTitle].ingame = {
+								name: name + ' Crafting Motif',
+								source: 'The ' + name + ' Crafting Motif has a chance to drop' + s[1],
+								type: 'motif',
+							}
 						}
 						
 						const dates = [...chunk.matchAll(/([A-Z][a-z]+) (\d{1,2})(?:, (\d{4}))?,?(?: at (\d+) ?([AP]M) ([A-Z]{2,3}))?/g)]
@@ -130,7 +127,7 @@ async function getShowcase(slug) {
 						}
 					}
 
-					if (source.length) {
+					if (motif === null && source.length) {
 						const name = currentTitle.substring(0, currentTitle.length-9).trim()
 
 						results[currentTitle].ingame = {
@@ -149,14 +146,6 @@ async function getShowcase(slug) {
 
 (async () => {
 	const {showcaseDate, currentSlug, previousSlug} = await getShowcaseDetails()
-
-	try {
-		const {showcaseDate: lastShowcaseDate} = require('./showcase.json')
-
-		if (showcaseDate.toJSON() == lastShowcaseDate) {
-			return
-		}
-	} catch {}
 
 	const results = await Promise.all([getShowcase(currentSlug), getShowcase(previousSlug)])
 
