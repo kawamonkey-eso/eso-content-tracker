@@ -147,6 +147,13 @@ async function getShowcase(slug) {
 (async () => {
 	const {showcaseDate, currentSlug, previousSlug} = await getShowcaseDetails()
 
+	try {
+		const {showcaseDate: lastShowcaseDate} = require('./showcase.json')
+		if (showcaseDate.toJSON() == lastShowcaseDate) {
+			return
+		}
+	} catch {}
+	
 	const results = await Promise.all([getShowcase(currentSlug), getShowcase(previousSlug)])
 
 	const items = results[0]
