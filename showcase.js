@@ -122,7 +122,7 @@ async function getShowcase(slug) {
 							u = true
 						}
 
-						if (armsPack && !u) {
+						if (armsPack && chunk && !u) {
 							source.push(chunk)
 						}
 					}
