@@ -15,7 +15,7 @@ env:
   TZ: 'UTC'
 
 jobs:
-  test_schedule:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Showcase JSON
@@ -35,3 +35,10 @@ jobs:
         run: node showcase
       - name: Publish Release Tracker addon
         run: node --no-experimental-fetch release-tracker
+  keepalive:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gautamkrishnar/keepalive-workflow@v2
